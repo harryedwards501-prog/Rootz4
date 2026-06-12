@@ -1534,7 +1534,10 @@ function renderCards(orgs) {
 
 function openModal() {
   document.getElementById('modalOverlay').classList.add('open');
-  document.getElementById('formContent').style.display = 'block';
+  // Reset form to blank state
+  const form = document.querySelector('#modalOverlay form');
+  if (form) form.reset();
+  document.querySelector('#modalOverlay form').style.display = 'block';
   document.getElementById('successMsg').style.display = 'none';
 }
 
