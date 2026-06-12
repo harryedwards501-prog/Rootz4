@@ -1621,9 +1621,13 @@ function jumpToOrgSet(names, label) {
   document.getElementById('finderResultBanner').style.display = 'block';
   document.getElementById('finderResultLabel').textContent = label || 'Showing suggestions from your answers';
 
-  // Scroll to cards
+  // Scroll to top of cards grid, accounting for sticky header
   setTimeout(() => {
-    document.getElementById('cardsGrid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const grid = document.getElementById('cardsGrid');
+    const header = document.querySelector('header');
+    const headerH = header ? header.offsetHeight : 60;
+    const top = grid.getBoundingClientRect().top + window.scrollY - headerH - 12;
+    window.scrollTo({ top, behavior: 'smooth' });
   }, 150);
 }
 
