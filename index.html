@@ -909,6 +909,14 @@
     .finder-options { grid-template-columns: 1fr; }
   }
 </style>
+<script>
+// Register service worker for instant updates
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/roots/sw.js').catch(() => {});
+  // Check for updates every time app is opened
+  navigator.serviceWorker.ready.then(reg => reg.update());
+}
+</script>
 </head>
 <body>
 
