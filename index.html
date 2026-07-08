@@ -204,35 +204,37 @@
 
   .finder-options {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-    gap: 9px;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
   }
 
   .finder-opt {
-    padding: 13px 14px;
+    padding: 16px 12px;
     background: rgba(255,255,255,0.11);
     border: 1px solid rgba(255,255,255,0.18);
     border-radius: var(--r-sm);
-    font-size: 0.9rem;
-    font-weight: 500;
+    font-size: 0.88rem;
+    font-weight: 600;
     color: white;
     cursor: pointer;
-    text-align: left;
+    text-align: center;
     transition: all 0.15s;
     display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 8px;
     line-height: 1.3;
     font-family: inherit;
-    min-height: 48px;
+    min-height: 90px;
   }
   .finder-opt:hover {
     background: rgba(255,255,255,0.22);
-    border-color: rgba(255,255,255,0.4);
-    transform: translateY(-1px);
+    border-color: rgba(255,255,255,0.5);
+    transform: translateY(-2px);
   }
-  .finder-opt:active { transform: translateY(0); }
-  .opt-icon { font-size: 1.15rem; flex-shrink: 0; }
+  .finder-opt:active { transform: translateY(0); background: rgba(255,255,255,0.28); }
+  .opt-icon { font-size: 1.8rem; flex-shrink: 0; }
 
   .btn-back {
     display: inline-flex;
@@ -270,13 +272,13 @@
   }
   .btn-restart:hover { color: white; }
 
-  .suggestion-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 4px; }
+  .suggestion-chips { display: flex; flex-direction: column; gap: 10px; margin-bottom: 4px; }
 
   .suggestion-chip {
-    padding: 10px 18px;
+    padding: 14px 16px;
     background: white;
     border: none;
-    border-radius: 50px;
+    border-radius: 12px;
     font-size: 0.9rem;
     font-weight: 700;
     color: var(--green);
@@ -284,16 +286,22 @@
     font-family: inherit;
     transition: all 0.15s;
     display: flex;
-    align-items: center;
-    gap: 7px;
+    align-items: flex-start;
+    gap: 12px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-    min-height: 44px;
+    text-align: left;
+    width: 100%;
   }
   .suggestion-chip:hover {
     background: var(--green-pale);
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(0,0,0,0.16);
   }
+  .chip-emoji { font-size: 1.4rem; flex-shrink: 0; margin-top: 1px; }
+  .chip-text { flex: 1; min-width: 0; }
+  .chip-name { font-size: 0.92rem; font-weight: 700; color: var(--green); line-height: 1.2; margin-bottom: 3px; }
+  .chip-desc { font-size: 0.78rem; font-weight: 400; color: var(--mid); line-height: 1.4; }
+  .chip-arrow { font-size: 0.8rem; color: var(--green-light); flex-shrink: 0; align-self: center; }
 
   .finder-browse-all { margin-top: 16px; font-size: 0.85rem; color: rgba(255,255,255,0.6); }
   .finder-browse-all button {
@@ -305,6 +313,20 @@
     font-family: inherit; font-size: 0.85rem; padding: 0;
   }
   .finder-browse-all button:hover { color: white; }
+
+  /* Card detail inside finder */
+  .finder-card-detail {
+    background: white;
+    border-radius: var(--r-sm);
+    overflow: hidden;
+  }
+  .finder-card-detail .card-inner {
+    padding: 16px;
+  }
+  .finder-card-detail .card-title { color: var(--charcoal); }
+  .finder-card-detail .card-desc { color: var(--mid); }
+  .finder-card-detail .btn-phone { background: var(--green); }
+  .finder-card-detail .btn-map { background: var(--green-ultra); color: var(--green); border-color: #b8deba; }
 
   .finder-collapse-btn {
     display: block; width: 100%; padding: 11px;
@@ -933,16 +955,15 @@
         <div class="finder-progress">
           <div class="finder-pip active" id="pip1"></div>
           <div class="finder-pip" id="pip2"></div>
-          <div class="finder-pip" id="pip3"></div>
         </div>
-        <p class="finder-q">What feels most important to you right now?</p>
+        <p class="finder-q">What would be most helpful for you right now?</p>
         <div class="finder-options">
-          <button class="finder-opt" onclick="pickStep1('connect')"><span class="opt-icon">👋</span>Meet people &amp; feel less alone</button>
-          <button class="finder-opt" onclick="pickStep1('active')"><span class="opt-icon">🌿</span>Be more active or get outdoors</button>
+          <button class="finder-opt" onclick="pickStep1('connect')"><span class="opt-icon">🤝</span>Meet people and feel more connected</button>
           <button class="finder-opt" onclick="pickStep1('support')"><span class="opt-icon">💛</span>Get some support or advice</button>
+          <button class="finder-opt" onclick="pickStep1('active')"><span class="opt-icon">🌿</span>Get more active or get outdoors</button>
           <button class="finder-opt" onclick="pickStep1('purpose')"><span class="opt-icon">🙌</span>Give something back or help others</button>
-          <button class="finder-opt" onclick="pickStep1('carer')"><span class="opt-icon">🫂</span>Support as a carer</button>
           <button class="finder-opt" onclick="pickStep1('getout')"><span class="opt-icon">🚐</span>Help getting out and about</button>
+          <button class="finder-opt" onclick="pickStep1('carer')"><span class="opt-icon">🫂</span>I look after someone and need support</button>
         </div>
       </div>
 
@@ -952,7 +973,6 @@
         <div class="finder-progress">
           <div class="finder-pip done"></div>
           <div class="finder-pip active"></div>
-          <div class="finder-pip" id="pip3b"></div>
         </div>
         <p class="finder-q" id="step2q">One more thing…</p>
         <div class="finder-options" id="step2opts"></div>
@@ -960,22 +980,39 @@
 
       <!-- Step 3: Results -->
       <div class="finder-step" id="step3">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-          <button class="btn-back" style="margin-bottom:0;" onclick="showStep(2)">← Back</button>
-          <button class="btn-restart" onclick="restartFinder()">↩ Start again</button>
-        </div>
+        <button class="btn-back" onclick="showStep(2)">← Back</button>
         <div class="finder-progress">
-          <div class="finder-pip done"></div>
           <div class="finder-pip done"></div>
           <div class="finder-pip done"></div>
         </div>
         <h4 id="resultsTitle" style="margin:12px 0 10px;">Here are some suggestions for you</h4>
         <div class="suggestion-chips" id="suggestionChips"></div>
+        <div style="margin-top:14px;text-align:right;">
+          <button class="btn-restart" onclick="restartFinder()">↩ Try different options</button>
+        </div>
+      </div>
+
+      <!-- Step 4: Card Detail -->
+      <div class="finder-step" id="step4">
+        <button class="btn-back" onclick="showStep(3)">← Back to suggestions</button>
+        <div id="finderCardDetail" style="margin-top:4px;"></div>
       </div>
 
     </div>
 
   </div>
+</div>
+<div style="padding:14px 0 0;">
+  <button onclick="toggleBrowse()" id="browseToggleBtn" style="width:100%;padding:14px 18px;background:white;border:none;border-radius:12px;color:var(--green);font-family:inherit;font-size:1rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;box-shadow:0 2px 12px rgba(0,0,0,0.15);transition:opacity 0.15s;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span style="font-size:1.2rem;">📋</span>
+      <div style="text-align:left;">
+        <div id="browseToggleLabel" style="font-size:0.95rem;font-weight:700;color:var(--green);">Browse all organisations</div>
+        <div style="font-size:0.75rem;color:var(--mid);font-weight:400;margin-top:1px;">See everything available in Tiverton</div>
+      </div>
+    </div>
+    <span id="browseToggleArrow" style="font-size:1rem;color:var(--green);transition:transform 0.2s;">▼</span>
+  </button>
 </div>
 </div><!-- /finder-section -->
 </div><!-- /app-layout-finder -->
@@ -985,7 +1022,9 @@
   <div class="browse-heading">
     <span>📋</span><h2>Browse all organisations</h2>
   </div>
-<div class="browse-divider">or browse everything</div>
+
+
+<div id="browseSection" style="display:none;">
 <div class="controls">
   <div class="search-box">
     <span class="search-icon">🔍</span>
@@ -1007,13 +1046,6 @@
 
 <div class="results-info" id="resultsInfo"></div>
 
-<div class="finder-result-banner" id="finderResultBanner">
-  <div class="finder-result-banner-inner">
-    <p>🧭 <span id="finderResultLabel">Showing suggestions from your answers</span></p>
-    <button class="btn-clear-finder" onclick="clearFinderResult()">← Back to all options</button>
-  </div>
-</div>
-
 <div class="cards-grid" id="cardsGrid"></div>
 
 <div class="add-org-section">
@@ -1026,6 +1058,7 @@
     <button class="btn-add" onclick="openModal()">Suggest an Organisation</button>
   </div>
 </div><!-- /add-org-section -->
+</div><!-- /browseSection -->
 </div><!-- /app-layout-browse -->
 </div><!-- /app-layout -->
 
@@ -1482,6 +1515,8 @@ function setFilter(cat, btn) {
   activeFilter = cat;
   document.querySelectorAll('.filter-btn:not(.free-toggle)').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
+  const bs = document.getElementById('browseSection');
+  if (bs) bs.style.display = 'block';
   filterCards();
 }
 
@@ -1592,9 +1627,15 @@ function toggleFinder() {
 }
 
 function showStep(n) {
-  ['step1','step2','step3'].forEach((id,i) => {
+  ['step1','step2','step3','step4'].forEach((id,i) => {
     document.getElementById(id).classList.toggle('active', i === n-1);
   });
+}
+
+function getShortDesc(org) {
+  // Return a single punchy line — first sentence of description, max 80 chars
+  const first = org.description.split(/[.—]/)[0].trim();
+  return first.length > 90 ? first.substring(0, 88) + '…' : first;
 }
 
 function highlightOrgs(names) {
@@ -1602,19 +1643,24 @@ function highlightOrgs(names) {
   chips.innerHTML = names.map((name, idx) => {
     const org = organisations.find(o => o.name === name);
     if (!org) return '';
-    // Store index rather than name to avoid any character escaping issues
+    const shortDesc = getShortDesc(org);
+    const costLabel = org.cost === 'free' ? '✓ Free' : org.cost === 'paid' ? '£ Paid' : '£ Some costs';
     return `<button class="suggestion-chip" data-orgidx="${idx}">
-      <span>${org.emoji}</span><span>${org.name}</span>
+      <span class="chip-emoji">${org.emoji}</span>
+      <div class="chip-text">
+        <div class="chip-name">${org.name}</div>
+        <div class="chip-desc">${shortDesc}</div>
+        <div style="margin-top:4px;font-size:0.72rem;font-weight:700;color:${org.cost === 'free' ? '#1a7030' : '#888'};">${costLabel}</div>
+      </div>
+      <span class="chip-arrow">›</span>
     </button>`;
   }).join('');
-  // Store the names array on the container so click handlers can look up by index
   chips._orgNames = names;
   chips.querySelectorAll('.suggestion-chip').forEach(btn => {
     btn.addEventListener('click', () => {
       const idx = parseInt(btn.dataset.orgidx, 10);
       const name = chips._orgNames[idx];
-      // Jump to just this one org
-      jumpToOrgSet([name], name);
+      showOrgDetail(name);
     });
   });
 }
@@ -1624,6 +1670,55 @@ let finderHighlightNames = [];
 
 function jumpToOrg(name) {
   jumpToOrgSet([name], name);
+}
+
+function showOrgDetail(name) {
+  const org = organisations.find(o => o.name === name);
+  if (!org) return;
+
+  const tag = categoryTagMap[org.category] || { label: org.category, cls: '' };
+  const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(org.address)}`;
+
+  const costLabel = org.cost === 'free'
+    ? '<span class="cost-dot cost-free">Free</span>'
+    : org.cost === 'paid'
+    ? '<span class="cost-dot cost-paid">Paid</span>'
+    : '<span class="cost-dot cost-mixed">Some costs</span>';
+
+  document.getElementById('finderCardDetail').innerHTML = `
+    <div class="finder-card-detail">
+      <div class="card-inner">
+        <div class="card-header">
+          <div class="card-emoji">${org.emoji}</div>
+          <div class="card-title-block">
+            <div class="card-title">${org.name}</div>
+            <div class="card-badges">
+              <span class="category-tag ${tag.cls}">${tag.label}</span>
+              ${costLabel}
+            </div>
+          </div>
+        </div>
+        <p class="card-desc">${org.description}</p>
+        <div class="card-meta">
+          ${org.distance ? `<div class="meta-row"><span class="meta-icon">📏</span><span>${org.distance}</span></div>` : ''}
+          ${org.difficulty ? `<div class="meta-row"><span class="meta-icon">⛰️</span><span>${org.difficulty.charAt(0).toUpperCase() + org.difficulty.slice(1)}</span></div>` : ''}
+          ${org.address ? `<div class="meta-row"><span class="meta-icon">📍</span><span>${org.address}</span></div>` : ''}
+          ${org.hours ? `<div class="meta-row"><span class="meta-icon">🕐</span><span>${org.hours}</span></div>` : ''}
+          ${org.callToAction ? `<div class="meta-row" style="margin-top:4px;padding-top:8px;border-top:1px solid var(--sand);"><span class="meta-icon">💬</span><span style="color:var(--green);font-weight:600;">${org.callToAction}</span></div>` : ''}
+        </div>
+        <div class="card-actions">
+          ${org.phone ? `<a class="btn-phone" href="tel:${org.phone.replace(/\s/g,'')}">📞 ${org.phone}</a>` : ''}
+          ${org.appStoreUrl ? `<a class="btn-map" href="${org.appStoreUrl}" target="_blank" rel="noopener">📱 iPhone</a>` : ''}
+          ${org.playStoreUrl ? `<a class="btn-map" href="${org.playStoreUrl}" target="_blank" rel="noopener">🤖 Android</a>` : ''}
+          ${org.routeUrl ? `<a class="btn-map" href="${org.routeUrl}" target="_blank" rel="noopener">${org.routeLabel || '🗺️ Route map'}</a>` : ''}
+          ${!org.appStoreUrl && !org.routeUrl ? `<a class="btn-map" href="${mapUrl}" target="_blank" rel="noopener">🗺️ Map</a>` : ''}
+        </div>
+      </div>
+    </div>`;
+
+  showStep(4);
+  // Scroll finder card into view
+  document.getElementById('finderCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function jumpToOrgSet(names, label) {
@@ -1645,7 +1740,9 @@ function jumpToOrgSet(names, label) {
   document.getElementById('resultsInfo').textContent =
     matched.length === 1 ? '1 result' : `${matched.length} results`;
 
-  // Show banner with clear back button
+  // Show browse section and banner
+  const bs = document.getElementById('browseSection');
+  if (bs) bs.style.display = 'block';
   document.getElementById('finderResultBanner').style.display = 'block';
   document.getElementById('finderResultLabel').textContent = label || 'Showing suggestions from your answers';
 
@@ -1663,8 +1760,46 @@ function clearFinderResult() {
   finderHighlightNames = [];
   document.getElementById('finderResultBanner').style.display = 'none';
   filterCards();
-  // Scroll back up to the finder so they can choose again
-  document.getElementById('finderCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  // Scroll back up to top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function hideBrowse() {
+  const bs = document.getElementById('browseSection');
+  if (bs) bs.style.display = 'none';
+  document.getElementById('browseToggleLabel').textContent = 'Browse all organisations';
+  document.getElementById('browseToggleArrow').style.transform = 'rotate(0deg)';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleBrowse() {
+  const bs = document.getElementById('browseSection');
+  const isOpen = bs && bs.style.display !== 'none';
+  if (isOpen) {
+    hideBrowse();
+  } else {
+    showBrowse();
+  }
+}
+
+function showBrowse() {
+  const bs = document.getElementById('browseSection');
+  if (bs) bs.style.display = 'block';
+  // Update toggle button
+  const lbl = document.getElementById('browseToggleLabel');
+  const arr = document.getElementById('browseToggleArrow');
+  if (lbl) lbl.textContent = 'Hide all organisations';
+  if (arr) arr.style.transform = 'rotate(180deg)';
+  filterCards();
+  setTimeout(() => {
+    const header = document.querySelector('header');
+    const headerH = header ? header.offsetHeight : 60;
+    const bs2 = document.getElementById('browseSection');
+    if (bs2) {
+      const top = bs2.getBoundingClientRect().top + window.scrollY - headerH - 12;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  }, 150);
 }
 
 function browseAll() {
@@ -1678,12 +1813,12 @@ function browseAll() {
   document.querySelector('[data-cat="all"]').classList.add('active');
   const ft = document.getElementById('freeToggle');
   if (ft) ft.classList.remove('active');
-  filterCards();
-  setTimeout(() => document.getElementById('cardsGrid').scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
+  showBrowse();
 }
 
 function restartFinder() {
   step1choice = null;
+  document.getElementById('finderCardDetail').innerHTML = '';
   showStep(1);
 }
 
@@ -1704,8 +1839,7 @@ function pickStep1(choice) {
     setStep2Opts([
       { key: 'connect_social', icon: '☕', label: 'Somewhere warm to drop in' },
       { key: 'connect_active', icon: '🚶', label: 'Something active or outdoors' },
-      { key: 'connect_hobby',  icon: '🎱', label: 'A club or hobby group' },
-      { key: 'connect_any',   icon: '🤷', label: "I'm open to anything" },
+      { key: 'connect_any',    icon: '🤷', label: "I'm open to anything" },
     ]);
   } else if (choice === 'active') {
     document.getElementById('step2q').textContent = 'What sounds most appealing?';
@@ -1735,7 +1869,7 @@ const resultSets = {
   connect_social:   { title: 'Places to meet people and feel welcome',    orgs: ['Old Heathcoat School Community Centre', 'Sunningmead Community Centre', 'Moorhayes Community Centre', 'Devon Mental Health Alliance – Tiverton Drop-in'] },
   connect_active:   { title: 'Active ways to meet people',                orgs: ['Grand Western Canal – Walking & Nature', 'Westexe Rec Junior Parkrun', 'Exe Valley Leisure Centre'] },
   connect_hobby:    { title: 'Clubs and social groups',                   orgs: ['Old Heathcoat School Community Centre', 'Sunningmead Community Centre', 'Moorhayes Community Centre'] },
-  connect_any:      { title: 'A mix of ideas to help you connect',        orgs: ['Old Heathcoat School Community Centre', 'Grand Western Canal – Walking & Nature', 'Sunningmead Community Centre', 'Involve Voluntary Action', 'Exeter Community Initiatives – Transitions'] },
+  connect_any:      { title: 'A mix of ideas to help you connect',        orgs: ['Old Heathcoat School Community Centre', 'Tiverton Walk and Talk', 'Sunningmead Community Centre', 'Involve Voluntary Action', 'Exeter Community Initiatives – Transitions'] },
   active_gentle:    { title: 'Gentle ways to get more active',            orgs: ['NHS Active 10', 'Exe Valley Leisure Centre', 'NHS Couch to 5K', 'Age UK Devon'] },
   active_moderate:  { title: 'Structured activities to get moving',       orgs: ['Exe Valley Leisure Centre', 'Westexe Rec Junior Parkrun', 'Grand Western Canal – Walking & Nature'] },
   active_kids:      { title: 'Activities for children',                   orgs: ['Westexe Rec Junior Parkrun', 'Old Heathcoat School Community Centre', 'Sunningmead Community Centre'] },
@@ -1757,9 +1891,8 @@ function showResults(key) {
   showStep(3);
 }
 
-// Init
-filterCards();
-document.getElementById('resultsInfo').textContent = `Showing all ${organisations.length} organisations`;
+// Init — cards hidden until user browses or uses finder
+document.getElementById('resultsInfo').textContent = '';
 </script>
 </body>
 </html>
