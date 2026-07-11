@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Roots QR Code</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #f8f6f2;
+  }
+  .card {
+    background: white;
+    border-radius: 20px;
+    padding: 36px 40px;
+    text-align: center;
+    box-shadow: 0 4px 40px rgba(0,0,0,0.12);
+    max-width: 340px;
+    width: 100%;
+  }
+  .logo {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #2e6b36;
+    letter-spacing: -0.03em;
+    margin-bottom: 4px;
+  }
+  .tagline {
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 24px;
+  }
+  #qrcode {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+  #qrcode canvas, #qrcode img {
+    border-radius: 8px;
+  }
+  .instruction {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 6px;
+  }
+  .sub {
+    font-size: 0.8rem;
+    color: #999;
+    line-height: 1.5;
+  }
+  .url {
+    font-size: 0.72rem;
+    color: #bbb;
+    margin-top: 20px;
+    word-break: break-all;
+  }
+  .divider {
+    height: 1px;
+    background: #f0ece6;
+    margin: 20px 0;
+  }
+  .amicus {
+    font-size: 0.78rem;
+    color: #aaa;
+  }
+  .amicus strong { color: #2e6b36; }
+  @media print {
+    body { background: white; }
+    .card { box-shadow: none; border: 1px solid #ddd; }
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">🌿 Roots</div>
+  <div class="tagline">Connecting Tiverton to its community</div>
+  <div id="qrcode"></div>
+  <div class="instruction">Scan with your phone camera</div>
+  <div class="sub">Point your camera at the code above<br>to open the app instantly</div>
+  <div class="divider"></div>
+  <div class="amicus">Provided by <strong>Amicus Health</strong></div>
+  <div class="url">https://harryedwards501-prog.github.io/Rootz4/</div>
+</div>
+<script>
+  new QRCode(document.getElementById("qrcode"), {
+    text: "https://harryedwards501-prog.github.io/Rootz4/",
+    width: 220,
+    height: 220,
+    colorDark: "#2e6b36",
+    colorLight: "#ffffff",
+    correctLevel: QRCode.CorrectLevel.H
+  });
+</script>
+</body>
+</html>

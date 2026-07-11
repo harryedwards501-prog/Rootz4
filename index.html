@@ -850,6 +850,56 @@
     }
   }
 
+  /* ── INSTALL BANNER ────────────────────────────────────────────── */
+  .install-banner {
+    display: none;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: white;
+    border-top: 2px solid var(--green-light);
+    padding: 14px 16px;
+    z-index: 300;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.12);
+    animation: slideUp 0.3s ease;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
+  }
+  .install-banner-inner {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .install-banner-text { flex: 1; }
+  .install-banner-text strong { display: block; font-size: 0.9rem; color: var(--charcoal); font-weight: 700; margin-bottom: 2px; }
+  .install-banner-text span { font-size: 0.78rem; color: var(--mid); }
+  .btn-install {
+    padding: 10px 18px;
+    background: var(--green);
+    color: white;
+    border: none;
+    border-radius: var(--r-sm);
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .btn-install-close {
+    background: none;
+    border: none;
+    color: var(--light);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 4px;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+
   footer {
     background: white;
     border-top: 1px solid var(--border);
@@ -912,7 +962,7 @@
 <script>
 // Register service worker for instant updates
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/roots/sw.js').catch(() => {});
+  navigator.serviceWorker.register('/Rootz4/sw.js').catch(() => {});
   // Check for updates every time app is opened
   navigator.serviceWorker.ready.then(reg => reg.update());
 }
@@ -1115,6 +1165,19 @@ if ('serviceWorker' in navigator) {
       <button class="btn-submit" style="margin-top:18px;max-width:160px;margin-left:auto;margin-right:auto;display:block;" onclick="closeModal()">Close</button>
     </div>
     <iframe name="formTarget" style="display:none;"></iframe>
+  </div>
+</div>
+
+<!-- Install Banner -->
+<div class="install-banner" id="installBanner">
+  <div class="install-banner-inner">
+    <span style="font-size:1.8rem;flex-shrink:0;">🌿</span>
+    <div class="install-banner-text">
+      <strong>Add Roots to your home screen</strong>
+      <span id="installInstructions">Tap Share then "Add to Home Screen"</span>
+    </div>
+    <button class="btn-install" id="installBtn" style="display:none;">Install</button>
+    <button class="btn-install-close" onclick="dismissInstall()">✕</button>
   </div>
 </div>
 
@@ -1901,6 +1964,58 @@ function showResults(key) {
 
 // Init — cards hidden until user browses or uses finder
 document.getElementById('resultsInfo').textContent = '';
+
+// ── INSTALL PROMPT ────────────────────────────────────────────────────────────
+let deferredPrompt = null;
+
+function showInstallBanner() {
+  // Don't show if already installed
+  if (window.matchMedia('(display-mode: standalone)').matches) return;
+  if (sessionStorage.getItem('installDismissed')) return;
+
+  const banner = document.getElementById('installBanner');
+  const btn = document.getElementById('installBtn');
+  const instructions = document.getElementById('installInstructions');
+
+  // Detect iOS
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isAndroid = /android/i.test(navigator.userAgent);
+
+  if (isIOS) {
+    instructions.textContent = 'Tap the Share button (□↑) then "Add to Home Screen"';
+    banner.style.display = 'block';
+  } else if (deferredPrompt) {
+    instructions.textContent = 'Save Roots to your home screen for quick access';
+    btn.style.display = 'block';
+    banner.style.display = 'block';
+  } else if (isAndroid) {
+    instructions.textContent = 'Tap the menu (⋮) then "Add to Home screen"';
+    banner.style.display = 'block';
+  }
+}
+
+function dismissInstall() {
+  document.getElementById('installBanner').style.display = 'none';
+  sessionStorage.setItem('installDismissed', '1');
+}
+
+// Catch Android Chrome install prompt
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  showInstallBanner();
+});
+
+document.getElementById('installBtn').addEventListener('click', async () => {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  deferredPrompt = null;
+  dismissInstall();
+});
+
+// Show banner after 3 seconds
+setTimeout(showInstallBanner, 3000);
 </script>
 </body>
 </html>
