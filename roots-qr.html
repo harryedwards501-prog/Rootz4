@@ -16,82 +16,98 @@
   }
   .card {
     background: white;
-    border-radius: 20px;
+    border-radius: 24px;
     padding: 36px 40px;
     text-align: center;
     box-shadow: 0 4px 40px rgba(0,0,0,0.12);
     max-width: 340px;
     width: 100%;
   }
-  .logo {
-    font-size: 2rem;
+  .icon-wrap {
+    width: 72px;
+    height: 72px;
+    border-radius: 16px;
+    overflow: hidden;
+    margin: 0 auto 10px;
+    box-shadow: 0 2px 12px rgba(46,107,54,0.25);
+  }
+  .icon-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .app-name {
+    font-size: 1.6rem;
     font-weight: 800;
     color: #2e6b36;
     letter-spacing: -0.03em;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
   }
   .tagline {
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     color: #888;
     margin-bottom: 24px;
+    line-height: 1.4;
   }
-  #qrcode {
+  .qr-wrap {
     display: flex;
     justify-content: center;
+    align-items: center;
     margin-bottom: 24px;
+    position: relative;
   }
   #qrcode canvas, #qrcode img {
     border-radius: 8px;
-  }
-  .instruction {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 6px;
-  }
-  .sub {
-    font-size: 0.8rem;
-    color: #999;
-    line-height: 1.5;
-  }
-  .url {
-    font-size: 0.72rem;
-    color: #bbb;
-    margin-top: 20px;
-    word-break: break-all;
+    display: block;
   }
   .divider {
     height: 1px;
     background: #f0ece6;
     margin: 20px 0;
   }
-  .amicus {
+  .instruction {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 6px;
+  }
+  .sub {
     font-size: 0.78rem;
-    color: #aaa;
+    color: #999;
+    line-height: 1.6;
+  }
+  .amicus {
+    font-size: 0.75rem;
+    color: #bbb;
+    margin-top: 18px;
   }
   .amicus strong { color: #2e6b36; }
   @media print {
-    body { background: white; }
-    .card { box-shadow: none; border: 1px solid #ddd; }
+    body { background: white; min-height: unset; }
+    .card { box-shadow: none; border: 1px solid #e0e0e0; margin: 20px auto; }
   }
 </style>
 </head>
 <body>
 <div class="card">
-  <div class="logo">🌿 Roots</div>
+  <div class="icon-wrap">
+    <img src="data:image/png;base64,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" alt="Roots icon">
+  </div>
+  <div class="app-name">Roots</div>
   <div class="tagline">Connecting Tiverton to its community</div>
-  <div id="qrcode"></div>
-  <div class="instruction">Scan with your phone camera</div>
-  <div class="sub">Point your camera at the code above<br>to open the app instantly</div>
+  <div class="qr-wrap">
+    <div id="qrcode"></div>
+  </div>
+  <div class="instruction">📱 Scan with your phone camera</div>
+  <div class="sub">Point your camera at the code above<br>to open the app instantly — no download needed</div>
   <div class="divider"></div>
   <div class="amicus">Provided by <strong>Amicus Health</strong></div>
-  <div class="url">https://harryedwards501-prog.github.io/Rootz4/</div>
 </div>
 <script>
   new QRCode(document.getElementById("qrcode"), {
-    text: "https://harryedwards501-prog.github.io/Rootz4/",
-    width: 220,
-    height: 220,
+    text: "https://amicushealth.github.io/Rootz4/",
+    width: 230,
+    height: 230,
     colorDark: "#2e6b36",
     colorLight: "#ffffff",
     correctLevel: QRCode.CorrectLevel.H
