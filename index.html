@@ -1034,6 +1034,7 @@ if ('serviceWorker' in navigator) {
         </div>
         <p class="finder-q" id="step2q">One more thing…</p>
         <div class="finder-options" id="step2opts"></div>
+
       </div>
 
       <!-- Step 3: Results -->
@@ -1048,6 +1049,7 @@ if ('serviceWorker' in navigator) {
         <div style="margin-top:14px;text-align:right;">
           <button class="btn-restart" onclick="restartFinder()">↩ Try different options</button>
         </div>
+
       </div>
 
       <!-- Step 4: Card Detail -->
@@ -1106,25 +1108,19 @@ if ('serviceWorker' in navigator) {
 
 <div class="cards-grid" id="cardsGrid"></div>
 
-<div class="add-org-section">
-  <div class="add-org-card">
-    <span class="emoji">➕</span>
-    <div>
-      <h3>Know a local group we're missing?</h3>
-      <p>Help us keep this list growing. Suggest a Tiverton organisation, club or activity and we'll add it.</p>
-    </div>
-    <button class="btn-add" onclick="openModal()">Suggest an Organisation</button>
-  </div>
-</div><!-- /add-org-section -->
+
 </div><!-- /browseSection -->
 </div><!-- /app-layout-browse -->
 </div><!-- /app-layout -->
 
 <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
   <div class="modal">
-    <h2>Suggest an Organisation</h2>
-    <p class="subtitle">Know a local group, club, or service that could help someone in Tiverton? Tell us about it and we'll review it.</p>
-    <form action="https://formspree.io/f/mlgkprzw" method="POST" target="formTarget" onsubmit="handleFormSubmit()">
+    <h2 id="modalTitle">Suggest an Organisation</h2>
+    <p class="subtitle" id="modalSubtitle">Know a local group, club, or service that could help someone in Tiverton? Tell us about it and we'll review it.</p>
+
+    <!-- Suggest form -->
+    <form id="suggestForm" action="https://formspree.io/f/mlgkprzw" method="POST" target="formTarget" onsubmit="handleFormSubmit()">
+      <input type="hidden" name="Type" value="Suggestion">
       <div class="form-group">
         <label>Organisation Name *</label>
         <input type="text" name="Organisation name" placeholder="e.g. Tiverton Walking Group" required>
@@ -1158,13 +1154,53 @@ if ('serviceWorker' in navigator) {
         <button type="submit" class="btn-submit">Submit Suggestion</button>
       </div>
     </form>
+
+    <!-- Report form -->
+    <form id="reportForm" action="https://formspree.io/f/mlgkprzw" method="POST" target="formTarget" onsubmit="handleFormSubmit()" style="display:none;">
+      <input type="hidden" name="Type" value="Incorrect details report">
+      <div class="form-group">
+        <label>Organisation Name *</label>
+        <input type="text" name="Organisation name" placeholder="Which organisation has incorrect details?" required>
+      </div>
+      <div class="form-group">
+        <label>What's incorrect? *</label>
+        <select name="Issue type" required>
+          <option value="">Select…</option>
+          <option value="Phone number">Phone number is wrong</option>
+          <option value="Opening hours">Opening hours are wrong</option>
+          <option value="Address">Address is wrong</option>
+          <option value="Organisation closed">Organisation has closed</option>
+          <option value="Other">Something else</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Correct information (if you know it)</label>
+        <textarea name="Correct details" placeholder="Tell us what the correct details are…"></textarea>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button>
+        <button type="submit" class="btn-submit">Send Report</button>
+      </div>
+    </form>
+
     <div class="success-msg" id="successMsg" style="display:none;">
       <span class="check">✅</span>
       <h3>Thank you!</h3>
-      <p>Your suggestion has been received. A member of the practice team will review it and add it to the directory if appropriate.</p>
+      <p id="successText">Your submission has been received. A member of the practice team will review it.</p>
       <button class="btn-submit" style="margin-top:18px;max-width:160px;margin-left:auto;margin-right:auto;display:block;" onclick="closeModal()">Close</button>
     </div>
     <iframe name="formTarget" style="display:none;"></iframe>
+  </div>
+</div>
+
+<div style="background:var(--green);padding:16px;">
+  <div style="max-width:1140px;margin:0 auto;">
+    <p style="color:white;font-weight:700;font-size:0.9rem;margin-bottom:2px;">💬 Help us improve Roots</p>
+    <p style="color:rgba(255,255,255,0.75);font-size:0.78rem;margin-bottom:12px;">Know a group we're missing, or spotted something out of date?</p>
+    <div style="display:flex;gap:8px;">
+      <button onclick="openModal('suggest')" style="flex:1;padding:10px 8px;background:white;border:none;border-radius:8px;font-family:inherit;font-size:0.82rem;font-weight:700;color:var(--green);cursor:pointer;">➕ Suggest an organisation</button>
+      <button onclick="openModal('report')" style="flex:1;padding:10px 8px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.4);border-radius:8px;font-family:inherit;font-size:0.82rem;font-weight:700;color:white;cursor:pointer;">⚠️ Report incorrect details</button>
+    </div>
   </div>
 </div>
 
@@ -1663,13 +1699,27 @@ function renderCards(orgs) {
   }).join('');
 }
 
-function openModal() {
+function openModal(mode) {
+  mode = mode || 'suggest';
   document.getElementById('modalOverlay').classList.add('open');
-  // Reset form to blank state
-  const form = document.querySelector('#modalOverlay form');
-  if (form) form.reset();
-  document.querySelector('#modalOverlay form').style.display = 'block';
   document.getElementById('successMsg').style.display = 'none';
+
+  const suggestForm = document.getElementById('suggestForm');
+  const reportForm = document.getElementById('reportForm');
+
+  if (mode === 'report') {
+    suggestForm.style.display = 'none';
+    reportForm.style.display = 'block';
+    reportForm.reset();
+    document.getElementById('modalTitle').textContent = 'Report Incorrect Details';
+    document.getElementById('modalSubtitle').textContent = "Spotted something out of date? Let us know and we'll update it as soon as possible.";
+  } else {
+    suggestForm.style.display = 'block';
+    reportForm.style.display = 'none';
+    suggestForm.reset();
+    document.getElementById('modalTitle').textContent = 'Suggest an Organisation';
+    document.getElementById('modalSubtitle').textContent = "Know a local group, club, or service that could help someone in Tiverton? Tell us about it and we'll review it.";
+  }
 }
 
 function closeModal() {
@@ -1681,10 +1731,9 @@ function handleOverlayClick(e) {
 }
 
 function handleFormSubmit() {
-  // Show thank you after a short delay to allow form to POST
   setTimeout(() => {
-    const form = document.querySelector('#modalOverlay form');
-    if (form) form.style.display = 'none';
+    document.getElementById('suggestForm').style.display = 'none';
+    document.getElementById('reportForm').style.display = 'none';
     document.getElementById('successMsg').style.display = 'block';
   }, 800);
 }
@@ -2006,13 +2055,16 @@ window.addEventListener('beforeinstallprompt', e => {
   showInstallBanner();
 });
 
-document.getElementById('installBtn').addEventListener('click', async () => {
-  if (!deferredPrompt) return;
-  deferredPrompt.prompt();
-  const { outcome } = await deferredPrompt.userChoice;
-  deferredPrompt = null;
-  dismissInstall();
-});
+const installBtn = document.getElementById('installBtn');
+if (installBtn) {
+  installBtn.addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    dismissInstall();
+  });
+}
 
 // Show banner after 3 seconds
 setTimeout(showInstallBanner, 3000);
